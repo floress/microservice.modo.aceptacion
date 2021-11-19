@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microservice.Modo.Aceptacion</name>
+    </assembly>
+    <members>
+        <member name="T:Microservice.Modo.Aceptacion.Controllers.AccesoController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.AccesoController.#ctor(Microservice.Modo.Aceptacion.Business.IAfipAccesoService)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.AccesoController.ObtenerToken">
+            <summary>
+            Obtener token de acceso
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

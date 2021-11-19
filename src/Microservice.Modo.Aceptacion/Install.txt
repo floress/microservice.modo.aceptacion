@@ -1,0 +1,2 @@
+﻿sc create "Microservice PagoDeServicios" binPath="D:\contenido\Microservices\PagoDeServicios\Microservice.PagoDeServicios.exe"
+

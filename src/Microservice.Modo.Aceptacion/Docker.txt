@@ -1,0 +1,12 @@
+﻿Ver Dockerfile y NuGet.Config
+
+F:\NBSFProyectos\Microservice.PagoDeServicios>
+
+a pata
+docker build -f src\Microservice.PagoDeServicios\Dockerfile . -t floress/pagodeservicios:latest
+docker login bsfactcentos3.nbsf.com.ar:443
+docker tag pagodeservicios:latest bsfactcentos3.nbsf.com.ar:443/sflores/pagodeservicios:latest
+
+desde visual
+docker tag microservicemicrofichas:latest bsfactcentos3.nbsf.com.ar:443/sflores/microservicemicrofichas:latest
+docker tag microservicemicrofichas:latest bsfactcentos3.nbsf.com.ar:443/sflores/microservicemicrofichas:latest

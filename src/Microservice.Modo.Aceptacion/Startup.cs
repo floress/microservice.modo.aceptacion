@@ -1,8 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Net;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using HealthChecks.UI.Client;
 using Microservice.Modo.Aceptacion.Business.Profiles;
 using Microservice.Modo.Aceptacion.Infrastructure;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -14,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Modo.Clients;
 using WyD.Mess;
 using WyD.Mess.Discovery.Consul;
 using WyD.Mess.Docs.Swagger;
@@ -57,7 +63,20 @@ public class Startup
 
         builder.Services.AddScoped<GenericActionFilter>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        //builder.Services.AddScoped<IAfipPagosService, AfipPagosService>();
+        builder.Services.AddHttpClient<IMerchantClient, MerchantClient>(client =>
+        {
+            var baseUri = Configuration["ModoClientOptions:Uri"];
+            var clientId = Configuration["ModoClientOptions:ClientId"];
+            var secret = Configuration["ModoClientOptions:Secret"];
+
+            //Basic Authentication
+            var authenticationString = $"{clientId}:{secret}";
+            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+
+            client.BaseAddress = new Uri(baseUri);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
+        });
+
         //builder.Services.AddScoped<IAfipAccesoService, AfipAccesoService>();
         //builder.Services.AddScoped<IParametrosEntradaHeaderReader, ParametrosEntradaHeaderReader>();
         //builder.Services.AddScoped<IIdRequerimientoGenerator, IdRequerimientoGenerator>();

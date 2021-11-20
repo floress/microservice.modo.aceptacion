@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.Modo.Aceptacio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.Modo.Aceptacion.Business", "src\Microservice.Modo.Aceptacion.Business\Microservice.Modo.Aceptacion.Business.csproj", "{188F54D9-C58A-4FCD-ABA0-5B8A0CCBAE93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modo.Clients", "src\Modo.Clients\Modo.Clients.csproj", "{C6203E14-6AB5-478E-86CF-F163652C286E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{188F54D9-C58A-4FCD-ABA0-5B8A0CCBAE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{188F54D9-C58A-4FCD-ABA0-5B8A0CCBAE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{188F54D9-C58A-4FCD-ABA0-5B8A0CCBAE93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6203E14-6AB5-478E-86CF-F163652C286E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6203E14-6AB5-478E-86CF-F163652C286E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6203E14-6AB5-478E-86CF-F163652C286E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6203E14-6AB5-478E-86CF-F163652C286E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

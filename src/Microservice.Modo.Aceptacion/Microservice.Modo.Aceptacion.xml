@@ -4,20 +4,26 @@
         <name>Microservice.Modo.Aceptacion</name>
     </assembly>
     <members>
-        <member name="T:Microservice.Modo.Aceptacion.Controllers.AccesoController">
+        <member name="T:Microservice.Modo.Aceptacion.Controllers.MerchantController">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Microservice.Modo.Aceptacion.Controllers.AccesoController.#ctor(Microservice.Modo.Aceptacion.Business.IAfipAccesoService)">
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.#ctor(Modo.Clients.IMerchantClient)">
             <summary>
             
             </summary>
             <param name="service"></param>
         </member>
-        <member name="M:Microservice.Modo.Aceptacion.Controllers.AccesoController.ObtenerToken">
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.ObtenerComercio(System.Int64,System.Nullable{System.Int64})">
             <summary>
-            Obtener token de acceso
+            Obtener comercio por cuit
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.CrearComercio(Modo.Clients.CrearComercioRequest)">
+            <summary>
+            Crear comercio
             </summary>
             <returns></returns>
         </member>

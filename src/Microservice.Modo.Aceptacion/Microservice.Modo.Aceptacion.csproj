@@ -57,6 +57,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Microservice.Modo.Aceptacion.Business\Microservice.Modo.Aceptacion.Business.csproj" />
     <ProjectReference Include="..\Microservice.Modo.Aceptacion.EntityFramework.SqlServer\Microservice.Modo.Aceptacion.EntityFramework.SqlServer.csproj" />
+    <ProjectReference Include="..\Modo.Clients\Modo.Clients.csproj" />
   </ItemGroup>
 
   <ItemGroup>

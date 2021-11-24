@@ -1,2 +1,2 @@
-﻿sc create "Microservice PagoDeServicios" binPath="D:\contenido\Microservices\PagoDeServicios\Microservice.PagoDeServicios.exe"
+﻿sc create "Microservice Modo Aceptacion" binPath="D:\contenido\Microservices\PagoDeServicios\Microservice.Modo.Aceptacion.exe"
 

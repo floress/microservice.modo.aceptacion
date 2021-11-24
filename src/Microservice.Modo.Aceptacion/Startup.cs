@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using HealthChecks.UI.Client;
+using Microservice.Modo.Aceptacion.Business;
 using Microservice.Modo.Aceptacion.Business.Profiles;
 using Microservice.Modo.Aceptacion.Infrastructure;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modo.Clients;
+using Modo.Clients.Interfaces;
 using WyD.Mess;
 using WyD.Mess.Discovery.Consul;
 using WyD.Mess.Docs.Swagger;
@@ -63,6 +64,7 @@ public class Startup
 
         builder.Services.AddScoped<GenericActionFilter>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         builder.Services.AddHttpClient<IMerchantClient, MerchantClient>(client =>
         {
             var baseUri = Configuration["ModoClientOptions:Uri"];
@@ -76,6 +78,22 @@ public class Startup
             client.BaseAddress = new Uri(baseUri);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
         });
+
+        builder.Services.AddHttpClient<IQrClient, QrClient>(client =>
+        {
+            var baseUri = Configuration["ModoClientOptions:Uri"];
+            var clientId = Configuration["ModoClientOptions:ClientId"];
+            var secret = Configuration["ModoClientOptions:Secret"];
+
+            //Basic Authentication
+            var authenticationString = $"{clientId}:{secret}";
+            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+
+            client.BaseAddress = new Uri(baseUri);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
+        });
+
+        builder.Services.AddScoped<IModoService, ModoService>();
 
         //builder.Services.AddScoped<IAfipAccesoService, AfipAccesoService>();
         //builder.Services.AddScoped<IParametrosEntradaHeaderReader, ParametrosEntradaHeaderReader>();
@@ -136,9 +154,7 @@ public class Startup
     {
         app.UseExceptionHandler(c => c.Run(async context =>
         {
-            var exception = context.Features
-                .Get<IExceptionHandlerPathFeature>()
-                .Error;
+            var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
             var response = new { error = exception.Message };
             await context.Response.WriteJsonAsync(response);
         }));

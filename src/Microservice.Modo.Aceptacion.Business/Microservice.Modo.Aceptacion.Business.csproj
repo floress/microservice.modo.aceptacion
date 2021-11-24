@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Microservice.Modo.Aceptacion.EntityFramework\Microservice.Modo.Aceptacion.EntityFramework.csproj" />
+    <ProjectReference Include="..\Modo.Clients\Modo.Clients.csproj" />
   </ItemGroup>
 
   <ItemGroup>

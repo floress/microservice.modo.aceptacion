@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Modo.Clients;
+namespace Modo.Clients.Models;
 
 public class Error404
 {
@@ -8,8 +8,8 @@ public class Error404
     public int StatusCode { get; set; }
 
     [JsonProperty("message")]
-    public string Message { get; set; }
+    public string? Message { get; set; }
 
     [JsonProperty("error")]
-    public string Error { get; set; }
+    public string? Error { get; set; }
 }

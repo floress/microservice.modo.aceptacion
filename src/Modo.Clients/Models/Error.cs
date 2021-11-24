@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Modo.Clients;
+namespace Modo.Clients.Models;
 
 public class Error
 {

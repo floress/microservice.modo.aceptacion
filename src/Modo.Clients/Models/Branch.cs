@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Modo.Clients;
+namespace Modo.Clients.Models;
 
 public class Branch : IValidatableObject
 {

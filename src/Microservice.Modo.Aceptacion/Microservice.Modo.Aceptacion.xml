@@ -9,7 +9,7 @@
             
             </summary>
         </member>
-        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.#ctor(Modo.Clients.IMerchantClient)">
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.#ctor(Microservice.Modo.Aceptacion.Business.IModoService)">
             <summary>
             
             </summary>
@@ -21,9 +21,32 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.CrearComercio(Modo.Clients.CrearComercioRequest)">
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.MerchantController.CrearComercio(Modo.Clients.Models.CrearComercioRequest)">
             <summary>
             Crear comercio
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Microservice.Modo.Aceptacion.Controllers.QrController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.QrController.#ctor(Microservice.Modo.Aceptacion.Business.IModoService)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.QrController.ObtenerQr(System.Int64,System.String,System.Nullable{System.Int64})">
+            <summary>
+            Obtener QR
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.QrController.GenerarQrParaLaCuenta(Modo.Clients.Models.GenerarQrParaLaCuentaRequest)">
+            <summary>
+            Generar QR para la cuenta
             </summary>
             <returns></returns>
         </member>

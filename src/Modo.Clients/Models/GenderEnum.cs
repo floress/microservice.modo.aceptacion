@@ -1,4 +1,4 @@
-﻿namespace Modo.Clients;
+﻿namespace Modo.Clients.Models;
 
 public enum GenderEnum
 {

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microservice.Modo.Aceptacion.Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Modo.Clients;
 using Modo.Clients.Models;
 
 namespace Microservice.Modo.Aceptacion.Controllers;
@@ -12,9 +12,9 @@ namespace Microservice.Modo.Aceptacion.Controllers;
 /// 
 /// </summary>
 [ApiController]
-[Route("merchant")]
+[Route("qr")]
 [ServiceFilter(typeof(GenericActionFilter))]
-public class MerchantController : ControllerBase
+public class QrController : ControllerBase
 {
     private readonly IModoService _service;
 
@@ -22,31 +22,31 @@ public class MerchantController : ControllerBase
     /// 
     /// </summary>
     /// <param name="service"></param>
-    public MerchantController(IModoService service)
+    public QrController(IModoService service)
     {
         _service = service;
     }
 
     /// <summary>
-    /// Obtener comercio por cuit
+    /// Obtener QR
     /// </summary>
     /// <returns></returns>
     [HttpGet("obtener")]
-    [ProducesResponseType(typeof(ObtenerComercioResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ObtenerQRResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ObtenerComercio([BindRequired] [FromQuery] long cuit, [FromQuery] long? id)
-        => Ok(await _service.ObtenerComercio(cuit, id));
+    public async Task<IActionResult> ObtenerQr([BindRequired] [FromQuery] long cuit, [BindRequired] [RegularExpression("[\\d]{22}")] [FromQuery] string cbu, [FromQuery] long? id)
+        => Ok(await _service.ObtenerQr(cuit, cbu, id));
 
     /// <summary>
-    /// Crear comercio
+    /// Generar QR para la cuenta
     /// </summary>
     /// <returns></returns>
     [HttpPost("crear")]
-    [ProducesResponseType(typeof(CrearComercioResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenerarQrParaLaCuentaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CrearComercio(CrearComercioRequest request)
-        => Ok(await _service.CrearComercio(request));
+    public async Task<IActionResult> GenerarQrParaLaCuenta(GenerarQrParaLaCuentaRequest request)
+        => Ok(await _service.GenerarQrParaLaCuenta(request));
 
 }

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Modo.Clients;
+namespace Modo.Clients.Models;
 
 public class TaxsCondition
 {

@@ -1,4 +1,6 @@
-﻿namespace Modo.Clients;
+﻿using Modo.Clients.Models;
+
+namespace Modo.Clients.Interfaces;
 
 public interface IMerchantClient
 {
@@ -9,5 +11,11 @@ public interface IMerchantClient
     /// <param name="id">Id del comercio en modo opcional</param>
     /// <returns></returns>
     Task<ObtenerComercioResponse> ObtenerComercio(long cuit, long? id);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     Task<CrearComercioResponse> CrearComercio(CrearComercioRequest request);
 }

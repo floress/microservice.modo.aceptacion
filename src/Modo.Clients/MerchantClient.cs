@@ -1,9 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Modo.Clients.Interfaces;
+using Modo.Clients.Models;
 
 namespace Modo.Clients;
 
-public class MerchantClient : IMerchantClient
+public class MerchantClient : BaseClient, IMerchantClient
 {
     private readonly HttpClient _client;
 
@@ -34,7 +36,7 @@ public class MerchantClient : IMerchantClient
             if (notfound == null)
                 throw new ApiException();
 
-            throw new ApiException(notfound.StatusCode, notfound.Error, notfound.Message);
+            throw new ApiException(notfound.StatusCode, notfound.Error ?? "", notfound.Message);
         }
 
         await HandleError(response);
@@ -56,28 +58,5 @@ public class MerchantClient : IMerchantClient
         await HandleError(response);
 
         return await GetResponse<CrearComercioResponse>(response);
-    }
-
-    private async Task HandleError(HttpResponseMessage response)
-    {
-        if (response.IsSuccessStatusCode)
-            return;
-
-        var error = await response.Content.ReadFromJsonAsync<Error>();
-
-        if (error != null)
-            throw new ApiException(error.Code, error.Message);
-
-        throw new ApiException();
-    }
-
-    private async Task<T> GetResponse<T>(HttpResponseMessage response)
-    {
-        var obj = await response.Content.ReadFromJsonAsync<T>();
-
-        if (obj == null)
-            throw new ApiException();
-
-        return obj;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Modo.Clients;
+namespace Modo.Clients.Models;
 
 public enum TipoCondicionFiscalEnum
 {

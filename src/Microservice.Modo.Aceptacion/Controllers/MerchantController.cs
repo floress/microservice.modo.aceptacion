@@ -3,7 +3,6 @@ using Microservice.Modo.Aceptacion.Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Modo.Clients;
 using Modo.Clients.Models;
 
 namespace Microservice.Modo.Aceptacion.Controllers;
@@ -13,7 +12,7 @@ namespace Microservice.Modo.Aceptacion.Controllers;
 /// </summary>
 [ApiController]
 [Route("merchant")]
-[ServiceFilter(typeof(GenericActionFilter))]
+//[ServiceFilter(typeof(GenericActionFilter))]
 public class MerchantController : ControllerBase
 {
     private readonly IModoService _service;

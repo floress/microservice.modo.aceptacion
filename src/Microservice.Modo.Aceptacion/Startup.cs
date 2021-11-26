@@ -13,12 +13,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Modo.Clients;
 using Modo.Clients.Interfaces;
 using WyD.Mess;
@@ -48,13 +45,13 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var builder = services.AddMess(Configuration)
-            //.AddErrorHandler<ExceptionToResponseMapper>()
+            .AddErrorHandler<ExceptionToResponseMapper>()
             .AddWebApi()
             .AddService<Program.Worker>()
             .AddHttpClient()
-            .AddConsul()
-            .AddFabio()
-            .AddJaeger()
+            //.AddConsul()
+            //.AddFabio()
+            //.AddJaeger()
             //.AddSwaggerDocs() //este lo agrega el de abajo
             .AddWebApiSwaggerDocs(setupAction: genOptions =>
             {
@@ -152,24 +149,26 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.UseExceptionHandler(c => c.Run(async context =>
-        {
-            var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
-            var response = new { error = exception.Message };
-            await context.Response.WriteJsonAsync(response);
-        }));
+        //app.UseExceptionHandler(c => c.Run(async context =>
+        //{
+        //    var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
+        //    var response = new { error = exception.Message };
+        //    await context.Response.WriteJsonAsync(response);
+        //}));
 
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        //if (env.IsDevelopment())
+        //{
+        //    app.UseDeveloperExceptionPage();
+        //}
+
+        app.UseExceptionHandler("/error");
 
         var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
         var title = $"{fileVersion.ProductVersion}/{fileVersion.FileVersion}";
 
         app.UseMess()
             //.UseErrorHandler()
-            .UseJaeger()
+            //.UseJaeger()
             .UseWebApi()
             .UseRouting()
             .UseEndpoints(r =>
@@ -191,53 +190,5 @@ public class Startup
                 r.MapGet("/version", async context => await context.Response.WriteAsync(title));
             })
             .UseSwaggerDocs();
-
-    }
-}
-
-public class GenericActionFilter : ActionFilterAttribute
-{
-    private readonly ILogger<GenericActionFilter> _logger;
-
-    public GenericActionFilter(ILogger<GenericActionFilter> logger)
-    {
-        _logger = logger;
-    }
-
-    public override void OnActionExecuting(ActionExecutingContext filterContext)
-    {
-        Log("OnActionExecuting ", filterContext.RouteData);
-    }
-
-    public override void OnActionExecuted(ActionExecutedContext filterContext)
-    {
-        if (filterContext.Exception != null)
-        {
-            var ex = filterContext.Exception;
-            _logger.LogError(ex.Message, ex);
-        }
-        else
-        {
-            Log("OnActionExecuted", filterContext.RouteData);
-        }
-    }
-
-    public override void OnResultExecuting(ResultExecutingContext filterContext)
-    {
-        Log("OnResultExecuting", filterContext.RouteData);
-    }
-
-    public override void OnResultExecuted(ResultExecutedContext filterContext)
-    {
-        Log("OnResultExecuted", filterContext.RouteData);
-    }
-
-
-    private void Log(string methodName, RouteData routeData)
-    {
-        var controllerName = routeData.Values["controller"];
-        var actionName = routeData.Values["action"];
-        var message = $"{methodName} controller:{controllerName} action:{actionName}";
-        _logger.LogDebug(message, "Action Filter Log");
     }
 }

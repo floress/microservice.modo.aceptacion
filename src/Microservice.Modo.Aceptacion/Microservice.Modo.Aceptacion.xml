@@ -50,5 +50,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.QrController.Throw">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
     </members>
 </doc>

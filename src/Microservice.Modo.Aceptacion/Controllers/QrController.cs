@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microservice.Modo.Aceptacion.Business;
 using Microsoft.AspNetCore.Http;
@@ -48,5 +49,18 @@ public class QrController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GenerarQrParaLaCuenta(GenerarQrParaLaCuentaRequest request)
         => Ok(await _service.GenerarQrParaLaCuenta(request));
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    [HttpPost("throw")]
+    [ProducesResponseType(typeof(GenerarQrParaLaCuentaResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Throw()
+    {
+        await Task.CompletedTask;
+        throw new Exception("Test");
+    }
 
 }

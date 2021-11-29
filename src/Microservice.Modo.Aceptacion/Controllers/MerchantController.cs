@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microservice.Modo.Aceptacion.Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@ public class MerchantController : ControllerBase
     [ProducesResponseType(typeof(ObtenerComercioResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ObtenerComercio([BindRequired] [FromQuery] long cuit, [FromQuery] long? id)
+    public async Task<IActionResult> ObtenerComercio([BindRequired] [FromQuery] [Range(20000000000, 39999999999)] long cuit, [FromQuery] long? id)
         => Ok(await _service.ObtenerComercio(cuit, id));
 
     /// <summary>

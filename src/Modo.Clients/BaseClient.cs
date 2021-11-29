@@ -12,10 +12,18 @@ public abstract class BaseClient
 
         var error = await response.Content.ReadFromJsonAsync<Error>();
 
-        if (error != null)
-            throw new ApiException(error.Code, error.Message);
+        if (error == null)
+            throw new ApiException();
 
-        throw new ApiException();
+        string msg;
+
+        if (error.Message is string[] errors)
+            msg = string.Join("\n", errors);
+        else
+            msg = $"{error.Message}";
+
+        throw new ApiException(error.Code ?? -1, msg);
+
     }
 
     protected async Task<T> GetResponse<T>(HttpResponseMessage response)

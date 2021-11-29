@@ -9,22 +9,17 @@ using Microservice.Modo.Aceptacion.Business;
 using Microservice.Modo.Aceptacion.Business.Profiles;
 using Microservice.Modo.Aceptacion.Infrastructure;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Modo.Clients;
 using Modo.Clients.Interfaces;
 using WyD.Mess;
-using WyD.Mess.Discovery.Consul;
 using WyD.Mess.Docs.Swagger;
 using WyD.Mess.Hosting.WindowsServices;
 using WyD.Mess.Http;
-using WyD.Mess.LoadBalancing.Fabio;
-using WyD.Mess.Tracing.Jaeger;
 using WyD.Mess.WebApi;
 using WyD.Mess.WebApi.Swagger;
 
@@ -60,6 +55,7 @@ public class Startup
             });
 
         builder.Services.AddScoped<GenericActionFilter>();
+        builder.Services.AddScoped<MessageLoggingHandler>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         builder.Services.AddHttpClient<IMerchantClient, MerchantClient>(client =>
@@ -74,7 +70,8 @@ public class Startup
 
             client.BaseAddress = new Uri(baseUri);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
-        });
+        })
+            .AddHttpMessageHandler<MessageLoggingHandler>();
 
         builder.Services.AddHttpClient<IQrClient, QrClient>(client =>
         {
@@ -88,7 +85,8 @@ public class Startup
 
             client.BaseAddress = new Uri(baseUri);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
-        });
+        })
+            .AddHttpMessageHandler<MessageLoggingHandler>();
 
         builder.Services.AddScoped<IModoService, ModoService>();
 

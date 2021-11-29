@@ -57,5 +57,9 @@
             <returns></returns>
             <exception cref="T:System.Exception"></exception>
         </member>
+        <member name="T:Microservice.Modo.Aceptacion.Infrastructure.MessageLoggingHandler">
+            <summary>
+            </summary>
+        </member>
     </members>
 </doc>

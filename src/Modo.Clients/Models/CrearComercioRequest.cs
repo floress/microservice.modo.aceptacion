@@ -10,6 +10,7 @@ public class CrearComercioRequest
     /// CUIT
     /// </summary>
     [JsonProperty("cuit")]
+    [RegularExpression("[\\d]{11}", ErrorMessage = "CUIT inválido")]
     public string Cuit { get; set; } = null!;
 
     /// <summary>
@@ -17,6 +18,7 @@ public class CrearComercioRequest
     /// </summary>
     [JsonProperty("email")]
     [EmailAddress]
+    [StringLength(250)]
     public string Email { get; set; } = null!;
 
     /// <summary>

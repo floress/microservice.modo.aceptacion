@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Modo.Clients.Models;
 
 namespace Microservice.Modo.Aceptacion.Business;
@@ -12,4 +13,7 @@ public interface IModoService
     Task<GenerarQrParaLaCuentaResponse> GenerarQrParaLaCuenta(GenerarQrParaLaCuentaRequest request);
 
     Task<ObtenerQRResponse> ObtenerQr(long cuit, string cbu, long? id);
+
+    IEnumerable<KeyValue> GetProvincias();
+    IEnumerable<KeyValue> GetSegmentos();
 }

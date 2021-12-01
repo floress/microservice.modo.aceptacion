@@ -27,6 +27,29 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Microservice.Modo.Aceptacion.Controllers.ParametersController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.ParametersController.#ctor(Microservice.Modo.Aceptacion.Business.IModoService)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.ParametersController.GetProvincias">
+            <summary>
+            Obtener listado de provincias
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microservice.Modo.Aceptacion.Controllers.ParametersController.GetSegmentos">
+            <summary>
+            Obtener listado de segmentos
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Microservice.Modo.Aceptacion.Controllers.QrController">
             <summary>
             

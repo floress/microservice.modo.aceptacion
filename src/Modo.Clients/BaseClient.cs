@@ -19,9 +19,9 @@ public abstract class BaseClient
         if (error.Message is string[] errors)
             msg = string.Join("\n", errors);
         else
-            msg = $"{error.Message}";
+            msg = $"{error.Message ?? error.ErrorDescripcion}";
 
-        throw new ApiException(error.Code ?? -1, msg);
+        throw new ApiException(error.Code ?? error.StatusCode ?? -1, msg);
 
     }
 

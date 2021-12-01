@@ -57,6 +57,7 @@ public class QrController : ControllerBase
     /// <exception cref="Exception"></exception>
     [HttpPost("throw")]
     [ProducesResponseType(typeof(GenerarQrParaLaCuentaResponse), StatusCodes.Status200OK)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<IActionResult> Throw()
     {
         await Task.CompletedTask;

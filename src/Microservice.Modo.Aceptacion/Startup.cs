@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using HealthChecks.UI.Client;
 using Microservice.Modo.Aceptacion.Business;
 using Microservice.Modo.Aceptacion.Business.Profiles;
@@ -40,10 +42,10 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         var builder = services.AddMess(Configuration)
-            .AddErrorHandler<ExceptionToResponseMapper>()
+            //.AddErrorHandler<ExceptionToResponseMapper>()
             .AddWebApi()
             .AddService<Program.Worker>()
-            .AddHttpClient()
+            //.AddHttpClient()
             //.AddConsul()
             //.AddFabio()
             //.AddJaeger()
@@ -54,46 +56,24 @@ public class Startup
                 genOptions.SchemaFilter<SchemaFilter>();
             });
 
+        builder.Services.AddControllers()
+            .AddJsonOptions(configure =>
+            {
+                configure.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
         builder.Services.AddScoped<GenericActionFilter>();
         builder.Services.AddScoped<MessageLoggingHandler>();
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-        builder.Services.AddHttpClient<IMerchantClient, MerchantClient>(client =>
-        {
-            var baseUri = Configuration["ModoClientOptions:Uri"];
-            var clientId = Configuration["ModoClientOptions:ClientId"];
-            var secret = Configuration["ModoClientOptions:Secret"];
-
-            //Basic Authentication
-            var authenticationString = $"{clientId}:{secret}";
-            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-
-            client.BaseAddress = new Uri(baseUri);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
-        })
+        builder.Services.AddHttpClient<IMerchantClient, MerchantClient>(ConfigureClient)
             .AddHttpMessageHandler<MessageLoggingHandler>();
 
-        builder.Services.AddHttpClient<IQrClient, QrClient>(client =>
-        {
-            var baseUri = Configuration["ModoClientOptions:Uri"];
-            var clientId = Configuration["ModoClientOptions:ClientId"];
-            var secret = Configuration["ModoClientOptions:Secret"];
-
-            //Basic Authentication
-            var authenticationString = $"{clientId}:{secret}";
-            var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
-
-            client.BaseAddress = new Uri(baseUri);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
-        })
+        builder.Services.AddHttpClient<IQrClient, QrClient>(ConfigureClient)
             .AddHttpMessageHandler<MessageLoggingHandler>();
 
         builder.Services.AddScoped<IModoService, ModoService>();
 
-        //builder.Services.AddScoped<IAfipAccesoService, AfipAccesoService>();
-        //builder.Services.AddScoped<IParametrosEntradaHeaderReader, ParametrosEntradaHeaderReader>();
-        //builder.Services.AddScoped<IIdRequerimientoGenerator, IdRequerimientoGenerator>();
-        //builder.Services.AddScoped<IIpClienteReader, IpClienteReader>();
         builder.Services.AddAutoMapper(expression =>
         {
             expression.AddMemberConfiguration().AddName<CaseInsensitiveName>();
@@ -144,21 +124,23 @@ public class Startup
         builder.Build();
     }
 
+    private void ConfigureClient(HttpClient client)
+    {
+        var baseUri = Configuration["ModoClientOptions:Uri"];
+        var clientId = Configuration["ModoClientOptions:ClientId"];
+        var secret = Configuration["ModoClientOptions:Secret"];
+
+        //Basic Authentication
+        var authenticationString = $"{clientId}:{secret}";
+        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+
+        client.BaseAddress = new Uri(baseUri);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(nameof(AuthenticationSchemes.Basic), base64EncodedAuthenticationString);
+    }
+
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        //app.UseExceptionHandler(c => c.Run(async context =>
-        //{
-        //    var exception = context.Features.Get<IExceptionHandlerPathFeature>().Error;
-        //    var response = new { error = exception.Message };
-        //    await context.Response.WriteJsonAsync(response);
-        //}));
-
-        //if (env.IsDevelopment())
-        //{
-        //    app.UseDeveloperExceptionPage();
-        //}
-
         app.UseExceptionHandler("/error");
 
         var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);

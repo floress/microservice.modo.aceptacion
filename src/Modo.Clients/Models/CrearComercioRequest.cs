@@ -41,7 +41,8 @@ public class CrearComercioRequest
     /// Codigo AFIP
     /// </summary>
     [JsonProperty("activity")]
-    public long Activity { get; set; }
+    [StringLength(6, MinimumLength = 5)]
+    public string Activity { get; set; } = null!;
 
     /// <summary>
     /// Identifica si esta exceptuado de iva
@@ -65,7 +66,8 @@ public class CrearComercioRequest
     /// M masculino, F femenino, X otro. Aplica solo para persona fisica.
     /// </summary>
     [JsonProperty("gender")]
-    public GenderEnum Gender { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public GenderEnum? Gender { get; set; }
 
     /// <summary>
     /// Sucursal

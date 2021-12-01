@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using Modo.Clients.Models;
+﻿using Modo.Clients.Models;
 
 namespace Modo.Clients;
 
